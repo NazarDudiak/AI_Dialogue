@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Form</title>
+    <!-- Підключення CSS бібліотеки (наприклад, Bootstrap) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Додаткові стилі для шаблону */
+        .container {
+            margin-top: 50px;
+        }
+        .response {
+            margin-top: 20px;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if not gpt_response %}
+        <h2 class="mb-4">Chat Form</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="userInput" id="userInput" class="form-control" placeholder="Enter your input">
+            </div>
+            <button type="submit" class="btn btn-primary">Send</button>
+            {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>
+            {% endif %}
+        </form>
+        {% endif %}
+
+        {% if gpt_response %}
+        <div class="response">
+            <h2>Response:</h2>
+            <p>{{ gpt_response }}</p>
+            <a href="#" onclick="window.location.reload();">Regenerate</a>
+            |
+            <a href="{% url 'chat_view' %}">Return to home</a>
+
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
